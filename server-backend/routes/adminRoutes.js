@@ -3,7 +3,7 @@ const express = require('express');
 const adminRouter = express.Router();
 
 const {registerAdmin,
-  loginAdmin,getAllUsers,deleteUserByAdmin,getAdminProfile,getAllSellers,approveSeller,deleteSellerByAdmin}
+  loginAdmin,logoutAdmin,getAllUsers,deleteUserByAdmin,getAdminProfile,getAllSellers,approveSeller,deleteSellerByAdmin}
    = require('../controllers/adminController');
 
 const authAdmin = require('../middlewares/authAdmin');
@@ -15,6 +15,11 @@ adminRouter.post('/register', registerAdmin);
 // Admin login
 // POST /api/admin/login
 adminRouter.post('/login', loginAdmin);
+
+//admin logout
+// POST /api/admin/logout
+adminRouter.post('/logout', logoutAdmin);
+
 
 // Get all users (admin only)
 // GET /api/admin/users

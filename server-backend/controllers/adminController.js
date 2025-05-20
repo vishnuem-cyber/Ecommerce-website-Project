@@ -68,6 +68,22 @@ const loginAdmin = async (req, res) => {
   }
 };
 
+//  Admin Logout
+//logout
+
+const logoutAdmin = async (req, res, next) => {
+  try {
+    res.clearCookie('token')
+    res.status(200).json({
+      success: true,
+      message: "Logout successfully"
+    })
+  } catch (error) {
+    console.log(error)
+    res.status(error.status || 500).json({ error: error.message || 'Internal Server Error' })
+  }
+}
+
 //  Get All Users
 const getAllUsers = async (req, res) => {
   try {
@@ -150,6 +166,6 @@ const deleteSellerByAdmin = async (req, res) => {
   }
 };
 
-module.exports = {registerAdmin,loginAdmin,getAllUsers,deleteUserByAdmin,getAdminProfile,getAllSellers,approveSeller,
+module.exports = {registerAdmin,loginAdmin,logoutAdmin,getAllUsers,deleteUserByAdmin,getAdminProfile,getAllSellers,approveSeller,
   deleteSellerByAdmin
 };
