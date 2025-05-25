@@ -68,7 +68,7 @@ const login = async (req, res, next) => {
       return res.ststus(400).json({ error: "Invalid password" })
     }
     //token creation
-    const token = createToken(userExists._id, userExists.role)
+    const token = createToken(userExists._id, 'userExists.role')
     res.cookie('token', token, {
       httpOnly: true,
       secure: true,

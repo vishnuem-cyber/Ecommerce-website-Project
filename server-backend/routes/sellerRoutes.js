@@ -1,17 +1,37 @@
 const express = require('express');
 const sellerRouter = express.Router();
-const {getSellerProfile,updateSellerProfile,addProduct,updateProduct,deleteProduct,getSellerProducts,
+const {registerSeller,loginSeller,logoutSeller,deleteSellerByAdmin,
+  getSellerProfile,updateSellerProfile,addProduct,updateProduct,deleteProduct,getSellerProducts,
   getSellerOrders,updateOrderStatus} = require('../controllers/sellerController');
 const authSeller = require('../middlewares/authSeller');
+const authAdmin = require('../middlewares/authAdmin');
 
 
 //  seller profile
+
+//Seller Registration
+// POST /api/seller/register
+sellerRouter.post('/register', registerSeller);
+
+//Seller login
+// POST /api/seller/login
+sellerRouter.post('/login', loginSeller);
+
 // GET /api/seller/profile 
 sellerRouter.get('/profile', authSeller, getSellerProfile);
 
 //Update seller profile
 // PATCH /api/seller/profile 
 sellerRouter.patch('/profile', authSeller, updateSellerProfile);
+
+//Logout seller
+// POST /api/seller/logout
+sellerRouter.post('/logout', logoutSeller);
+
+//delete seller
+// DELETE /api/seller/profile
+sellerRouter.delete('/delete/:sellerId', authAdmin, deleteSellerByAdmin);
+
 
 
 //Add new product

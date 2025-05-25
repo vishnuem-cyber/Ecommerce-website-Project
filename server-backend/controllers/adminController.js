@@ -132,15 +132,18 @@ const getAllSellers = async (req, res) => {
   }
 };
 
-//  Approve Seller
+
+// Approve Seller
 const approveSeller = async (req, res) => {
   try {
-    const sellerId = req.params.sellerId;
+
+    const sellerId = req.params.sellerId.trim();
+
     const seller = await Seller.findByIdAndUpdate(
       sellerId,
       { isApproved: true },
       { new: true }
-    ).select("-password");
+    );
 
     if (!seller) {
       return res.status(404).json({ error: "Seller not found" });
@@ -152,19 +155,30 @@ const approveSeller = async (req, res) => {
   }
 };
 
+
 //  Delete Seller By Admin
 const deleteSellerByAdmin = async (req, res) => {
   try {
     const sellerId = req.params.sellerId;
-    const seller = await Seller.findByIdAndDelete(sellerId);
+
+    // Find the seller first
+    const seller = await Seller.findById(sellerId);
     if (!seller) {
       return res.status(404).json({ error: "Seller not found" });
     }
-    res.status(200).json({ message: "Seller deleted", deletedSellerId: seller._id });
+
+    // Delete the linked user
+    await User.findByIdAndDelete(seller.userId);
+
+    // Delete the seller
+    await Seller.findByIdAndDelete(sellerId);
+
+    res.status(200).json({ message: "Seller and linked user deleted", deletedSellerId: seller._id });
   } catch (error) {
     res.status(500).json({ error: error.message || "Internal Server Error" });
   }
 };
+
 
 module.exports = {registerAdmin,loginAdmin,logoutAdmin,getAllUsers,deleteUserByAdmin,getAdminProfile,getAllSellers,approveSeller,
   deleteSellerByAdmin

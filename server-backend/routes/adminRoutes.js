@@ -46,6 +46,8 @@ adminRouter.post('/sellers/approve/:sellerId', authAdmin, approveSeller)
 adminRouter.delete('/sellers/:sellerId', authAdmin, deleteSellerByAdmin);
 
 
-
+adminRouter.get('/test', (req, res) => {
+  res.send('Admin route works!');
+});
 
 module.exports = adminRouter;
