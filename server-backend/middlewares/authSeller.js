@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken');
+const Seller = require('../models/SellerModel');
 
-const authSeller = (req, res, next) => {
+
+const authSeller = async(req, res, next) => {
   try {
     const { token } = req.cookies;
 
@@ -15,9 +17,18 @@ const authSeller = (req, res, next) => {
     if (!decodedToken || decodedToken.role !== 'seller') {
       return res.status(403).json({ message: 'Access denied. Not a seller' });
     }
+    //  Get seller from DB
+    const seller = await Seller.findOne({ userId: decodedToken.id });
+
+    if (!seller) {
+      return res.status(404).json({ message: 'Seller profile not found' });
+    }
+
+     
 
     // Attach user info to request
     req.user = decodedToken; // Includes id and role
+    req.seller = seller;         // full seller doc (with _id)
     next();
 
   } catch (error) {

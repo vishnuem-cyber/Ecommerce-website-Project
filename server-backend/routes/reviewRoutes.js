@@ -4,7 +4,8 @@ const {
   createReview,
   getReviewsByProductId,
   updateReview,
-  deleteReview
+  deleteReview,getAverageRating,getAllReviews,getUserReviews,
+  getSellerReviews
 } = require('../controllers/reviewController');
 const authUser = require('../middlewares/authUser');
 const authAdmin = require('../middlewares/authAdmin');
@@ -30,10 +31,7 @@ reviewRouter.get('/user/:userId', authUser, getUserReviews);
 // Get reviews for a specific seller
 reviewRouter.get('/seller/:sellerId', authUser, getSellerReviews);
 
-// Get reviews for a specific product
-reviewRouter.get('/product/:productId', authUser, getProductReviews);
-
-// Get reviews for a specific order
-reviewRouter.get('/order/:orderId', authUser, getOrderReviews);
+// Get average rating for a product
+reviewRouter.get('/product/:productId/average-rating', getAverageRating);
 
 module.exports = reviewRouter;

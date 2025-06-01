@@ -1,51 +1,35 @@
-// const express = require('express');
-// const productRouter = express.Router();
-// const {
-//   createProduct,
-//   updateProduct,
-//   deleteProduct,
-//   getProducts,
-//   getProductById,
-//   getSellerProducts,
-// } = require('../controllers/productController');
+const express = require('express');
+const productRouter = express.Router();
+const {
+  createProduct,
+  updateProduct,
+  deleteProduct,
+  getProducts,
+  getProductById,
+  getSellerProducts,createProductByAdmin
+} = require('../controllers/productController');
 
-// const authUser = require('../middlewares/authUser');
-// const authAdmin = require('../middlewares/authAdmin');
-// const authSeller = require('../middlewares/authSeller');
+const authUser = require('../middlewares/authUser');
+const authAdmin = require('../middlewares/authAdmin');
+const authSeller = require('../middlewares/authSeller');
 
-
-// // user routes (No auth)
-
-// // All users browse products
-// productRouter.get('/', getProducts); 
-// // Get single product
-// productRouter.get('/:id', getProductById); 
+const upload = require('../middlewares/multer');
 
 
-// // SELLER ROUTES (Auth: User + Seller)
+// PUBLIC ROUTES (No auth required)
+productRouter.get('/', getProducts); // Browse all products
+productRouter.get('/:id', getProductById); // Get single product
 
-// // Seller creates product
-// productRouter.post('/', authUser, authSeller, createProduct);
 
-// // Seller views their own products
-// productRouter.get('/seller/my-products', authUser, authSeller, getSellerProducts);
-
-// // Seller updates their own product
-// productRouter.put('/seller/:id', authUser, authSeller, updateProduct); 
-
-// // Seller deletes their own product
-// productRouter.delete('/seller/:id', authUser, authSeller, deleteProduct); 
-
+// SELLER ROUTES (Auth: User + Seller)
+productRouter.post('/seller', upload.single('image'), authUser, authSeller, createProduct); // Seller creates product
+productRouter.get('/seller/my-products', authUser, authSeller, getSellerProducts); // Seller views their products
+productRouter.put('/seller/:id', authUser, authSeller, updateProduct); // Seller updates THEIR product
+productRouter.delete('/seller/:id', authUser, authSeller, deleteProduct); // Seller deletes THEIR product
 
 // // ADMIN ROUTES (Auth: User + Admin)
+productRouter.post('/admin', upload.single('image'), authUser, authAdmin, createProductByAdmin); // Admin creates product
+productRouter.put('/admin/:id', authUser, authAdmin, updateProduct); // Admin updates ANY product
+productRouter.delete('/admin/:id', authUser, authAdmin, deleteProduct); // Admin deletes ANY product
 
-// // Admin creates product
-// productRouter.post('/admin', authUser, authAdmin, createProduct); 
-
-// // Admin updates ANY product
-// productRouter.put('/admin/:id', authUser, authAdmin, updateProduct); 
-
-// // Admin deletes ANY product
-// productRouter.delete('/admin/:id', authUser, authAdmin, deleteProduct); 
-
-// module.exports = productRouter;
+module.exports = productRouter;

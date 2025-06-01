@@ -5,6 +5,7 @@ const port = process.env.PORT
 const connectDB = require('./config/db')
 const router = require('./routes/index')
 
+
 //cookie parser
 const cookieParser = require('cookie-parser')
 
@@ -15,6 +16,7 @@ app.get('/', (req, res) => {
 app.use(express.json())
 app.use(cookieParser())
 app.use ('/api/' ,router)
+app.use(express.urlencoded({ extended: true })); // for form-data
 
 connectDB()
 app.listen(port, () => {

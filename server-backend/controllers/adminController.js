@@ -179,7 +179,34 @@ const deleteSellerByAdmin = async (req, res) => {
   }
 };
 
+// Update Seller By Admin
+const updateSellerByAdmin = async (req, res) => {
+  try {
+    const sellerId = req.params.sellerId;
+    const updates = req.body;
+
+    // Check if seller exists
+    const seller = await Seller.findById(sellerId);
+    if (!seller) {
+      return res.status(404).json({ error: "Seller not found" });
+    }
+
+    // Update fields
+    Object.keys(updates).forEach((key) => {
+      if (key !== 'password') {
+        seller[key] = updates[key];
+      }
+    });
+
+    // Save updated seller
+    const updatedSeller = await seller.save();
+
+    res.status(200).json({ message: "Seller updated successfully", seller: updatedSeller });
+  } catch (error) {
+    res.status(500).json({ error: error.message || "Internal Server Error" });
+  }
+};
 
 module.exports = {registerAdmin,loginAdmin,logoutAdmin,getAllUsers,deleteUserByAdmin,getAdminProfile,getAllSellers,approveSeller,
-  deleteSellerByAdmin
+  deleteSellerByAdmin,updateSellerByAdmin
 };

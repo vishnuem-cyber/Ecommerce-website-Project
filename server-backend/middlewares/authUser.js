@@ -25,12 +25,8 @@ const authUser = (req, res, next) => {
 
    } catch (error) {
       console.log(error)
-    
-
+   
    }
 }
-
-
-
 
 module.exports = authUser

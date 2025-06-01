@@ -3,7 +3,8 @@ const express = require('express');
 const adminRouter = express.Router();
 
 const {registerAdmin,
-  loginAdmin,logoutAdmin,getAllUsers,deleteUserByAdmin,getAdminProfile,getAllSellers,approveSeller,deleteSellerByAdmin}
+  loginAdmin,logoutAdmin,getAllUsers,deleteUserByAdmin,getAdminProfile,getAllSellers,
+  approveSeller,deleteSellerByAdmin,updateSellerByAdmin}
    = require('../controllers/adminController');
 
 const authAdmin = require('../middlewares/authAdmin');
@@ -45,6 +46,9 @@ adminRouter.post('/sellers/approve/:sellerId', authAdmin, approveSeller)
 // DELETE /api/admin/seller/:sellerId
 adminRouter.delete('/sellers/:sellerId', authAdmin, deleteSellerByAdmin);
 
+// Update a seller by admin
+// PUT /api/admin/sellers/:sellerId
+adminRouter.put('/sellers/:sellerId', authAdmin, updateSellerByAdmin);
 
 adminRouter.get('/test', (req, res) => {
   res.send('Admin route works!');
