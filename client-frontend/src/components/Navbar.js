@@ -1,24 +1,31 @@
-// src/components/Navbar.js
 import React from 'react';
-import './Navbar.css';
+import { Link } from 'react-router-dom';
+import '../styles/Navbar.css';
 
 function Navbar() {
   return (
     <nav className="navbar">
-      <h1>Snap N Shop</h1>
-      <ul style={{ display: 'flex', gap: '1rem', listStyle: 'none' }}>
-        <li><Link to="/" style={{ color: 'white' }}>Home</Link></li>
-        <li><Link to="/login" style={{ color: 'white' }}>Login</Link></li>
-        <li><Link to="/cart" style={{ color: 'white' }}>Cart</Link></li>
-      </ul>
+      <div className="navbar-left">
+        <h1 className="logo">Snap N Shop</h1>
+        <ul className="nav-links">
+          <li><Link to="/shop">Shop</Link></li>
+          <li><Link to="/stories">Stories</Link></li>
+          <li><Link to="/about">About</Link></li>
+        </ul>
+      </div>
+
+      <div className="navbar-center">
+        <input type="text" placeholder="Search" className="search-bar" />
+      </div>
+
+      <div className="navbar-right">
+        <Link to="/cart" className="cart-icon">
+          🛒<span className="cart-count">3</span>
+        </Link>
+        <Link to="/login" className="login-link">Login</Link>
+      </div>
     </nav>
   );
 }
 
 export default Navbar;
-
-
-
-
-      
-  
